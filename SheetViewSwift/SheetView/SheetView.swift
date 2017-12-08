@@ -200,7 +200,7 @@ class SheetView: UIView, UITableViewDelegate, UITableViewDataSource, UICollectio
     //tableview delegate
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.dataSource!.sheetView(sheetView: self, numberOfColsInSection: section)
+        return self.dataSource!.sheetView(sheetView: self, numberOfRowsInSection: section)
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -237,7 +237,7 @@ class SheetView: UIView, UITableViewDelegate, UITableViewDataSource, UICollectio
             return (self.dataSource?.sheetView(sheetView: self, cellForContentItemAtIndexRow: indexPath as NSIndexPath, indexCol: indexPathInner))!
         }
         contentCell?.numberOfItemsInSectionClosure = {(section) in
-            return (self.dataSource?.sheetView(sheetView: self, numberOfRowsInSection: section))!
+            return (self.dataSource?.sheetView(sheetView: self, numberOfColsInSection: section))!
         }
         contentCell?.sizeForItemAtIndexPathClosure = {(collectionViewLayout, indexPath) in
             return CGSize(width: width, height: height)

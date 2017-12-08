@@ -10,11 +10,11 @@ import UIKit
 
 class ViewController: UIViewController, SheetViewDelegate, SheetViewDataSource {
     func sheetView(sheetView: SheetView, numberOfRowsInSection section: Int) -> Int {
-        return 50
+        return 48
     }
     
     func sheetView(sheetView: SheetView, numberOfColsInSection section: Int) -> Int {
-        return 50
+        return 40
     }
     
     func sheetView(sheetView: SheetView, cellForContentItemAtIndexRow indexRow: NSIndexPath?, indexCol: NSIndexPath?) -> String {
