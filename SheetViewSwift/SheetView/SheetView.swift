@@ -56,43 +56,6 @@ class SheetView: UIView, UITableViewDelegate, UITableViewDataSource, UICollectio
     var kRowheight: CGFloat = 0
     var kColWidth: CGFloat = 0
     
-//    var rowHeight: CGFloat {
-//        get {
-//            if kRowheight == 0 {
-//                kRowheight = (self.delegate?.sheetView(sheetView: self, heightForRowAtIndexPath: nil))!
-//                if self.autoResizingItemMask {
-//                    let numOfRow: CGFloat = CGFloat(self.dataSource!.sheetView(sheetView: self, numberOfRowsInSection: 0))
-//                    if (numOfRow + 1) * kRowheight < self.frame.size.height {
-//                        kRowheight = self.frame.size.height/(numOfRow + 1)
-//                    }
-//
-//                }
-//            }
-//            return kRowheight
-//        }
-//        set {
-//            kRowheight = newValue
-//        }
-//    }
-//    var colWidth: CGFloat {
-//        get {
-//            if kColWidth == 0 {
-//                kColWidth = (self.delegate?.sheetView(sheetView: self, widthForColAtIndexPath: nil))!
-//                if self.autoResizingItemMask {
-//                    let numOfCol: CGFloat = CGFloat(self.dataSource!.sheetView(sheetView: self, numberOfColsInSection: 0))
-//                    if (numOfCol + 1) * kColWidth < self.frame.size.width {
-//                        kColWidth = self.frame.size.width/(numOfCol + 1)
-//                    }
-//
-//                }
-//            }
-//            return kColWidth
-//        }
-//        set {
-//            kColWidth = newValue
-//        }
-//    }
-    
     override init(frame: CGRect) {
 
         super.init(frame: frame)
@@ -165,8 +128,6 @@ class SheetView: UIView, UITableViewDelegate, UITableViewDataSource, UICollectio
         super.layoutSubviews()
         let sheetViewWidth = self.frame.size.width
         let sheetViewHeight = self.frame.size.height
-//        let rowHeight = self.rowHeight
-//        let colWidth = self.colWidth
         self.leftView.frame = CGRect(x: 0, y: self.titleRowHeight, width: self.titleColWidth, height: sheetViewHeight - self.titleRowHeight)
         self.topView?.frame = CGRect(x: self.titleColWidth, y: 0, width: sheetViewWidth - self.titleColWidth, height:  self.titleRowHeight)
         self.contentView.frame = CGRect(x: self.titleColWidth, y:  self.titleRowHeight, width: sheetViewWidth - self.titleColWidth, height: sheetViewHeight -  self.titleRowHeight)
@@ -190,8 +151,6 @@ class SheetView: UIView, UITableViewDelegate, UITableViewDataSource, UICollectio
     
     
     func reloadData() {
-//        self.rowHeight = 0
-//        self.colWidth = 0
         self.sheetHeadLabel?.frame = CGRect(x: 0, y: 0, width: self.titleColWidth, height: self.titleRowHeight)
         self.leftView.reloadData()
         self.topView?.reloadData()
@@ -206,7 +165,6 @@ class SheetView: UIView, UITableViewDelegate, UITableViewDataSource, UICollectio
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        let width = self.colWidth
         let height = self.delegate?.sheetView(sheetView: self, heightForRowAtIndexPath: indexPath as NSIndexPath)
         if tableView is SheetLeftView {
             var leftCell = tableView.dequeueReusableCell(withIdentifier: leftViewCellId)
