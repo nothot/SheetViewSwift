@@ -18,15 +18,23 @@ class ViewController: UIViewController, SheetViewDelegate, SheetViewDataSource {
     }
     
     func sheetView(sheetView: SheetView, cellForContentItemAtIndexRow indexRow: NSIndexPath?, indexCol: NSIndexPath?) -> String {
-        return "data"
+        let str1 = String(describing: indexRow!.row)
+        let str2 = String(indexCol!.row)
+        
+        return "data(\(str1),\(str2))"
+
     }
     
     func sheetView(sheetView: SheetView, cellForLeftColAtIndexPath indexPath: NSIndexPath?) -> String {
-        return "row"
+        let str = String(describing: indexPath!.row)
+        return "row(\(str))"
+
     }
     
     func sheetView(sheetView: SheetView, cellForTopRowAtIndexPath indexPath: NSIndexPath?) -> String {
-        return "col"
+        let str = String(describing: indexPath!.row)
+        return "col(\(str))"
+        
     }
     
     func sheetView(sheetView: SheetView, cellWithColorAtIndexRow indexRow: NSIndexPath?) -> Bool {
@@ -38,7 +46,7 @@ class ViewController: UIViewController, SheetViewDelegate, SheetViewDataSource {
     }
     
     func sheetView(sheetView: SheetView, widthForColAtIndexPath indexPath: NSIndexPath?) -> CGFloat {
-        return 80
+        return CGFloat(80 + 10 * (indexPath?.row)!)
     }
     
 

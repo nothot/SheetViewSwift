@@ -46,6 +46,8 @@ class SheetView: UIView, UITableViewDelegate, UITableViewDataSource, UICollectio
     public weak var delegate: SheetViewDelegate?
     public var sheetHead: String?
     public var autoResizingItemMask: Bool = true
+    public var titleColWidth: CGFloat = 80;
+    public var titleRowHeight: CGFloat = 60;
     
     var leftView: SheetLeftView = SheetLeftView()
     var topView: SheetTopView?
@@ -54,42 +56,42 @@ class SheetView: UIView, UITableViewDelegate, UITableViewDataSource, UICollectio
     var kRowheight: CGFloat = 0
     var kColWidth: CGFloat = 0
     
-    var rowHeight: CGFloat {
-        get {
-            if kRowheight == 0 {
-                kRowheight = (self.delegate?.sheetView(sheetView: self, heightForRowAtIndexPath: nil))!
-                if self.autoResizingItemMask {
-                    let numOfRow: CGFloat = CGFloat(self.dataSource!.sheetView(sheetView: self, numberOfRowsInSection: 0))
-                    if (numOfRow + 1) * kRowheight < self.frame.size.height {
-                        kRowheight = self.frame.size.height/(numOfRow + 1)
-                    }
-                    
-                }
-            }
-            return kRowheight
-        }
-        set {
-            kRowheight = newValue
-        }
-    }
-    var colWidth: CGFloat {
-        get {
-            if kColWidth == 0 {
-                kColWidth = (self.delegate?.sheetView(sheetView: self, widthForColAtIndexPath: nil))!
-                if self.autoResizingItemMask {
-                    let numOfCol: CGFloat = CGFloat(self.dataSource!.sheetView(sheetView: self, numberOfColsInSection: 0))
-                    if (numOfCol + 1) * kColWidth < self.frame.size.width {
-                        kColWidth = self.frame.size.width/(numOfCol + 1)
-                    }
-                    
-                }
-            }
-            return kColWidth
-        }
-        set {
-            kColWidth = newValue
-        }
-    }
+//    var rowHeight: CGFloat {
+//        get {
+//            if kRowheight == 0 {
+//                kRowheight = (self.delegate?.sheetView(sheetView: self, heightForRowAtIndexPath: nil))!
+//                if self.autoResizingItemMask {
+//                    let numOfRow: CGFloat = CGFloat(self.dataSource!.sheetView(sheetView: self, numberOfRowsInSection: 0))
+//                    if (numOfRow + 1) * kRowheight < self.frame.size.height {
+//                        kRowheight = self.frame.size.height/(numOfRow + 1)
+//                    }
+//
+//                }
+//            }
+//            return kRowheight
+//        }
+//        set {
+//            kRowheight = newValue
+//        }
+//    }
+//    var colWidth: CGFloat {
+//        get {
+//            if kColWidth == 0 {
+//                kColWidth = (self.delegate?.sheetView(sheetView: self, widthForColAtIndexPath: nil))!
+//                if self.autoResizingItemMask {
+//                    let numOfCol: CGFloat = CGFloat(self.dataSource!.sheetView(sheetView: self, numberOfColsInSection: 0))
+//                    if (numOfCol + 1) * kColWidth < self.frame.size.width {
+//                        kColWidth = self.frame.size.width/(numOfCol + 1)
+//                    }
+//
+//                }
+//            }
+//            return kColWidth
+//        }
+//        set {
+//            kColWidth = newValue
+//        }
+//    }
     
     override init(frame: CGRect) {
 
@@ -163,17 +165,17 @@ class SheetView: UIView, UITableViewDelegate, UITableViewDataSource, UICollectio
         super.layoutSubviews()
         let sheetViewWidth = self.frame.size.width
         let sheetViewHeight = self.frame.size.height
-        let rowHeight = self.rowHeight
-        let colWidth = self.colWidth
-        self.leftView.frame = CGRect(x: 0, y: rowHeight, width: colWidth, height: sheetViewHeight - rowHeight)
-        self.topView?.frame = CGRect(x: colWidth, y: 0, width: sheetViewWidth - colWidth, height: rowHeight)
-        self.contentView.frame = CGRect(x: colWidth, y: rowHeight, width: sheetViewWidth - colWidth, height: sheetViewHeight - rowHeight)
+//        let rowHeight = self.rowHeight
+//        let colWidth = self.colWidth
+        self.leftView.frame = CGRect(x: 0, y: self.titleRowHeight, width: self.titleColWidth, height: sheetViewHeight - self.titleRowHeight)
+        self.topView?.frame = CGRect(x: self.titleColWidth, y: 0, width: sheetViewWidth - self.titleColWidth, height:  self.titleRowHeight)
+        self.contentView.frame = CGRect(x: self.titleColWidth, y:  self.titleRowHeight, width: sheetViewWidth - self.titleColWidth, height: sheetViewHeight -  self.titleRowHeight)
         
         if self.sheetHeadLabel != nil {
             self.sheetHeadLabel!.removeFromSuperview()
         }
         
-        self.sheetHeadLabel = UILabel(frame: CGRect(x: 0, y: 0, width: colWidth, height: rowHeight))
+        self.sheetHeadLabel = UILabel(frame: CGRect(x: 0, y: 0, width: self.titleColWidth, height:  self.titleRowHeight))
         self.sheetHeadLabel?.text = self.sheetHead
         self.sheetHeadLabel?.textColor = UIColor.black
         self.sheetHeadLabel?.textAlignment = NSTextAlignment.center
@@ -188,9 +190,9 @@ class SheetView: UIView, UITableViewDelegate, UITableViewDataSource, UICollectio
     
     
     func reloadData() {
-        self.rowHeight = 0
-        self.colWidth = 0
-        self.sheetHeadLabel?.frame = CGRect(x: 0, y: 0, width: self.colWidth, height: self.rowHeight)
+//        self.rowHeight = 0
+//        self.colWidth = 0
+        self.sheetHeadLabel?.frame = CGRect(x: 0, y: 0, width: self.titleColWidth, height: self.titleRowHeight)
         self.leftView.reloadData()
         self.topView?.reloadData()
         self.contentView.reloadData()
@@ -204,8 +206,8 @@ class SheetView: UIView, UITableViewDelegate, UITableViewDataSource, UICollectio
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let width = self.colWidth
-        let height = self.rowHeight
+//        let width = self.colWidth
+        let height = self.delegate?.sheetView(sheetView: self, heightForRowAtIndexPath: indexPath as NSIndexPath)
         if tableView is SheetLeftView {
             var leftCell = tableView.dequeueReusableCell(withIdentifier: leftViewCellId)
             if leftCell == nil {
@@ -219,7 +221,7 @@ class SheetView: UIView, UITableViewDelegate, UITableViewDataSource, UICollectio
             leftCell?.backgroundColor = UIColor(red: 0xf0 / 255.0, green: 0xf0 / 255.0, blue: 0xf0 / 255.0, alpha: 1.0)
             leftCell?.layer.borderColor = UIColor(red: 0x90 / 255.0, green: 0x90 / 255.0, blue: 0x90 / 255.0, alpha: 1.0).cgColor
             leftCell?.layer.borderWidth = 1.0
-            let label = UILabel(frame: CGRect(x: 0, y: 0, width: width, height: height))
+            let label = UILabel(frame: CGRect(x: 0, y: 0, width: self.titleColWidth, height: height!))
             label.text = self.dataSource?.sheetView(sheetView: self, cellForLeftColAtIndexPath: indexPath as NSIndexPath)
             label.textColor = UIColor.black
             label.textAlignment = NSTextAlignment.center
@@ -239,8 +241,10 @@ class SheetView: UIView, UITableViewDelegate, UITableViewDataSource, UICollectio
         contentCell?.numberOfItemsInSectionClosure = {(section) in
             return (self.dataSource?.sheetView(sheetView: self, numberOfColsInSection: section))!
         }
-        contentCell?.sizeForItemAtIndexPathClosure = {(collectionViewLayout, indexPath) in
-            return CGSize(width: width, height: height)
+        contentCell?.sizeForItemAtIndexPathClosure = {(collectionViewLayout, indexPathInner) in
+            let width = self.delegate?.sheetView(sheetView: self, widthForColAtIndexPath: indexPathInner)
+            
+            return CGSize(width: width!, height: height!)
         }
         contentCell?.ContentViewCellDidScrollClosure = {(scroll) in
             for item in self.contentView.visibleCells {
@@ -255,14 +259,14 @@ class SheetView: UIView, UITableViewDelegate, UITableViewDataSource, UICollectio
             }
         }
         contentCell?.backgroundColor = UIColor(red: 0x90 / 255.0, green: 0x90 / 255.0, blue: 0x90 / 255.0, alpha: 1.0)
-        contentCell?.cellCollectionView?.frame = CGRect(x: 0, y: 0, width: self.frame.size.width - width, height: height)
+        contentCell?.cellCollectionView?.frame = CGRect(x: 0, y: 0, width: self.frame.size.width - self.titleColWidth, height: height!)
         contentCell?.cellCollectionView?.reloadData()
         
         return contentCell!
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return self.rowHeight
+        return (self.delegate?.sheetView(sheetView: self, heightForRowAtIndexPath: indexPath as NSIndexPath))!
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
@@ -284,8 +288,10 @@ class SheetView: UIView, UITableViewDelegate, UITableViewDataSource, UICollectio
         return self.dataSource!.sheetView(sheetView: self, numberOfColsInSection: section)
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: self.colWidth, height: self.rowHeight)
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPathInner: IndexPath) -> CGSize {
+        let width = self.delegate?.sheetView(sheetView: self, widthForColAtIndexPath: indexPathInner as NSIndexPath)
+        
+        return CGSize(width: width!, height: self.titleRowHeight)
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -295,7 +301,8 @@ class SheetView: UIView, UITableViewDelegate, UITableViewDataSource, UICollectio
             view.removeFromSuperview()
         }
         topCell.backgroundColor = UIColor(red: 0xf0 / 255.0, green: 0xf0 / 255.0, blue: 0xf0 / 255.0, alpha: 1.0)
-        let label = UILabel(frame: CGRect(x: 0, y: 0, width: self.colWidth, height: self.rowHeight))
+        let width = self.delegate?.sheetView(sheetView: self, widthForColAtIndexPath: indexPath as NSIndexPath)
+        let label = UILabel(frame: CGRect(x: 0, y: 0, width: width!, height: self.titleRowHeight))
         label.text = self.dataSource?.sheetView(sheetView: self, cellForTopRowAtIndexPath: indexPath as NSIndexPath)
         label.textAlignment = NSTextAlignment.center
         label.textColor = UIColor.black
