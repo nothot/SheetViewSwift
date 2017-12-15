@@ -308,6 +308,9 @@ class SheetView: UIView, UITableViewDelegate, UITableViewDataSource, UICollectio
         label.textColor = UIColor.black
         topCell.contentView.addSubview(label)
         
+        topCell.layer.borderColor = UIColor(red: 0x90 / 255.0, green: 0x90 / 255.0, blue: 0x90 / 255.0, alpha: 1.0).cgColor
+        topCell.layer.borderWidth = 1.0
+        
         return topCell
     }
     
