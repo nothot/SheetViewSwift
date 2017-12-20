@@ -9,6 +9,10 @@
 import UIKit
 
 class ViewController: UIViewController, SheetViewDelegate, SheetViewDataSource {
+    func sheetView(sheetView: SheetView, cellDidSelectedAtIndexRow indexRow: NSIndexPath?, indexCol: NSIndexPath?) {
+        print("点击 row \(String(describing: indexRow!.row)) col \(String(describing: indexCol!.row))")
+    }
+    
     func sheetView(sheetView: SheetView, numberOfRowsInSection section: Int) -> Int {
         return 48
     }
@@ -48,6 +52,8 @@ class ViewController: UIViewController, SheetViewDelegate, SheetViewDataSource {
     func sheetView(sheetView: SheetView, widthForColAtIndexPath indexPath: NSIndexPath?) -> CGFloat {
         return CGFloat(80 + 10 * (indexPath?.row)!)
     }
+    
+    
     
 
     override func viewDidLoad() {

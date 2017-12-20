@@ -21,6 +21,7 @@ protocol SheetViewDataSource: NSObjectProtocol {
 protocol SheetViewDelegate: NSObjectProtocol {
     func sheetView(sheetView: SheetView, heightForRowAtIndexPath indexPath: NSIndexPath?) -> CGFloat
     func sheetView(sheetView: SheetView, widthForColAtIndexPath indexPath: NSIndexPath?) -> CGFloat
+    func sheetView(sheetView: SheetView, cellDidSelectedAtIndexRow indexRow: NSIndexPath?, indexCol: NSIndexPath?) -> Void
 
 }
 
@@ -216,6 +217,12 @@ class SheetView: UIView, UITableViewDelegate, UITableViewDataSource, UICollectio
                 return (self.dataSource?.sheetView(sheetView: self, cellWithColorAtIndexRow: indexPath as NSIndexPath))!
             }
         }
+        contentCell?.cellDidSelectedClosure = {(indexPathInner) in
+            if self.delegate?.sheetView(sheetView: cellDidSelectedAtIndexRow: indexCol:) != nil {
+                self.delegate?.sheetView(sheetView: self, cellDidSelectedAtIndexRow: indexPath as NSIndexPath, indexCol: indexPathInner as NSIndexPath)
+            }
+        }
+        
         contentCell?.backgroundColor = UIColor(red: 0x90 / 255.0, green: 0x90 / 255.0, blue: 0x90 / 255.0, alpha: 1.0)
         contentCell?.cellCollectionView?.frame = CGRect(x: 0, y: 0, width: self.frame.size.width - self.titleColWidth, height: height!)
         contentCell?.cellCollectionView?.reloadData()

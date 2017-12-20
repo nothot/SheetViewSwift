@@ -18,6 +18,8 @@ class ContentViewCell: UITableViewCell, UICollectionViewDataSource, UICollection
     var sizeForItemAtIndexPathClosure: ((UICollectionViewLayout?, NSIndexPath) -> CGSize)?
     var ContentViewCellDidScrollClosure: ((UIScrollView) ->Void)?
     var cellWithColorAtIndexPathClosure: ((NSIndexPath) -> Bool)?
+    var cellDidSelectedClosure: ((NSIndexPath) -> Void)?
+
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -79,5 +81,11 @@ class ContentViewCell: UITableViewCell, UICollectionViewDataSource, UICollection
         innerCell.layer.borderWidth = 1.0
         
         return innerCell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if self.cellDidSelectedClosure != nil {
+            self.cellDidSelectedClosure!(indexPath as NSIndexPath)
+        }
     }
 }
